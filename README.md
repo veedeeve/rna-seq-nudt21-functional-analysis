@@ -4,14 +4,10 @@
 This project implements a fully reproducible RNA-seq analysis workflow to investigate the functional impact of **NUDT21** knockdown in human samples.
 
 This pipeline includes: 
- - SRA data retrieval
- - Quality control (FastQC, MultiQC)
- - Adapter trimming (Trimmomatic)
- - Alignment to GRCh38 (HISAT2)
- - Gene-level quanitification (featureCounts)
- - Differential expression analysis (limma-voom)
- - Gene Ontology (GO)
- - Gene Set Enrichment Analysis (GSEA)
+1. Preprocessing Data
+2. Alignment & Annotation
+3. Differential Expression
+4. Functional Enrichment
 
 ## Objectives
 
@@ -19,65 +15,55 @@ This pipeline includes:
 - Perform alignment and gene-level quantification
 - Model differential expression using limma-voom
 - Identify coordinated biological programs using GO-based GSEA
-- Deliver reproducible, publication-ready outputs
-- 
+
 ## Dataset
 RNA-seq samples retrieved from SRA (BioProject: PRJNA1305742)
  - 2 Control
  - 2 NUDT21 knockdown
-Genome reference: GRCh38
-Annotation: Ensembl Homo_sapiens.GRCh38
-
-## Tools Used
-**RNA-seq Processing**
-
-- SRA Toolkit
-- FastQC
-- Trimmomatic
-- HISAT2
-- Samtools
-- featureCounts
-- MultiQC
-
-**Differential Expression**
-- edgeR
-- limma-voom
-
-**Functional Enrichment**
-- clusterProfiler
-- org.Hs.eg.db
-- enrichplot
+**Genome reference**: GRCh38
+**Annotation**: Ensembl Homo_sapiens.GRCh38
 
 ## Project Structure
-### 1. RNA-seq Processing (Bash/Linux)
-- Data retrieval - SRA Toolkit
-- Quality control - FastQC + MultiQC
-- Adapter trimming - Trimmomatic
-- Gene alignment - HISAT2
-- BAM Processing - Samtools
-- Gene quantification - featureCounts
+### 1. Preprocessing Data (BASH)
+*Ensures high-quality reads prior to alignment*  
+#### 1.1 Data Download - Retrieved from NCBI SRA using ```prefetch```  
+#### 1.2 Quality Control - Assessed using ```FastQC```  
+#### 1.3 Adapter & Quality Trimming - Performed using ```Trimmomatic```  
+#### 1.4 Post-trimming quality control - Re-evaluated using ```FastQC```  
 
-### 2. Differential Expression (R)
-- Filtering + TMM normalization - edgeR
-- Linear modeling - limma-voom
-- T-statistics ranking
-- PCA for QC
+### 2. Alignment & Annotation
+*Pair-end RNA-seq reads aligned to human reference genome, sorted BAM files generated with samtools. Produce count-matrix for downstream DEG analysis by quantifying read counts*  
+#### 2.1 Alignment - Align to GRCh38 index using ```HISAT2```  
+#### 2.2 Alignment Quality Assessment - ```samtools flagstat``` + ```MultiQC```  
+#### 2.3 Gene-level Quantification - ```featureCounts```  
 
-### 3. Functional Enrichment
-- GO Gene Set Enrichment Analysis - clusterProfiler
-- Human gene annotation - org.Hs.eg.db
-- Enrichment visualization - enrichplot 
+### 3. Differential Expression (R)
+#### 3.1 Filtering + TMM normalization - ```edgeR```  
+#### 3.3 Linear modeling - ```limma-voom```  
+#### 3.4 T-statistics ranking  
+#### 3.5 PCA for QC
 
+### 4. Functional Enrichment (R)
+#### GO Gene Set Enrichment Analysis - ``` clusterProfiler``` 
+#### Human gene annotation - ``` org.Hs.eg.db``` 
+#### Enrichment visualization - ``` enrichplot ``` 
+
+## File Structure
 ```
-myfastqs/
-├── sample1
-│   ├── sample1_R1.fastq.gz
-│   └── sample1_R2.fastq.gz
-├── sample2
-│   ├── sample2_R1.fastq.gz
-│   └── sample2_R2.fastq.gz
-└── sample3
-    ├── sample3_R1.fastq.gz
-    └── sample3_R2.fastq.gz
+rna-seq-analysis/
+├── data/
+│   ├── ref/
+│   ├── annot/
+│   ├── trimmed/
+├── results/
+│   ├── fastqc/
+│   ├── alignment/
+│   ├── multiqc/
+│   ├── counts/
+├── scripts/
+│   ├── 01-rna-seq-processing.sh
+│   ├── 02-differential-expression.R
+│   └── 03-functional-enrichment.R
+└── README.md
 
 ```
