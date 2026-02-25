@@ -66,4 +66,4 @@ rna-seq-analysis/
 
 ## Results
 ### Alignment & Quality Control
-![MultiQC Alignment Summary](results/figures/multiqc_alignment_summary.png)
+![MultiQC Alignment Summary](results/figures/multiqc-alignment-summary.png)
