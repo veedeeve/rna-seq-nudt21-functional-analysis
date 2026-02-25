@@ -66,4 +66,24 @@ rna-seq-analysis/
 
 ## Results
 ### Alignment & Quality Control
-![MultiQC Alignment Summary](results/figures/multiqc-alignment-summary.png)
+All samples demonstrated high alignment efficiency (98.7–98.9% mapped reads) to the GRCh38 reference genome. Sequencing depth ranged from 56–85 million mapped reads per sample, providing sufficient coverage for differential gene expression.  
+<p align="center">
+  <img src="results/figures/multiqc-alignment-summary.png" width="800">
+</p> 
+
+### Mean–Variance Modeling (voom)
+The voom transformation modeled the mean–variance relationship of log-counts and generated precision weights for linear modeling, ensuring appropriate stabilization prior to differential expression analysis.
+<p align="center">
+  <img src="results/figures/voom-mean-variance.png" width="800">
+</p> 
+
+### Significant Genes
+After filtering and normalization, **18,180** genes were retained for analysis. Using an FDR < 0.05 threshold, **11,450** genes (~63%) were significantly differentially expressed between control and NUDT21 knockdown samples.  
+Among these:  
+- **5,965** genes were upregulated
+- **5,485** genes were downregulated  
+
+Applying a more stringent biological threshold (FDR < 0.05 and |log2FC| > 1), **2,953** genes showed strong differential expression, including:  
+
+- **1,701** strongly upregulated
+- **1,252** strongly downregulated
