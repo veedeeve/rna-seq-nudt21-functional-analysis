@@ -56,14 +56,14 @@ rna-seq-analysis/
 │   ├── annot/
 │   ├── trimmed/
 ├── results/
-│   ├── fastqc/
-│   ├── alignment/
-│   ├── multiqc/
-│   ├── counts/
+│   ├── figures/
 ├── scripts/
 │   ├── 01-rna-seq-processing.sh
 │   ├── 02-differential-expression.R
 │   └── 03-functional-enrichment.R
 └── README.md
-
 ```
+
+## Results
+### Alignment & Quality Control
+![MultiQC Alignment Summary](results/figures/multiqc_alignment_summary.png)
