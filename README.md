@@ -9,12 +9,8 @@ This pipeline includes:
 3. Differential Expression
 4. Functional Enrichment
 
-## Objectives
-
-- Process raw RNA-seq data from SRA
-- Perform alignment and gene-level quantification
-- Model differential expression using limma-voom
-- Identify coordinated biological programs using GO-based GSEA
+## Objectives  
+The objective of this project was to implement a reproducible RNA-seq bioinformatics workflow using FastQC, HISAT2, featureCounts, limma-voom, and clusterProfiler to identify differentially expressed genes and functionally enriched pathways following NUDT21 knockdown.
 
 ## Dataset
 RNA-seq samples retrieved from SRA (BioProject: PRJNA1305742)
@@ -57,11 +53,21 @@ rna-seq-analysis/
 │   ├── trimmed/
 ├── results/
 │   ├── figures/
+│   ├── docs/
 ├── scripts/
 │   ├── 01-rna-seq-processing.sh
 │   ├── 02-differential-expression.R
 │   └── 03-functional-enrichment.R
+├── environment.yml
 └── README.md
+```
+
+## Reproducible Environment
+This project includes a Conda environment specification file (`environment.yml`) containing all required command-line tools and R/Bioconductor packages.
+To recreate the environment:
+```bash
+conda env create -f environment.yml
+conda activate rna-seq
 ```
 
 ## Results
@@ -101,7 +107,31 @@ The volcano plot illustrates the magnitude and statistical significance of gene 
 </p> 
 
 ### Heatmap of Differentially Expressed Genes
-Hierarchical clustering of significant genes shows clear separation between control and knockdown samples, confirming consistent expression patterns within groups and strong differential regulation between conditions. The genes flipped their behavior based on the condition, consistently changed gene programs.  
+Hierarchical clustering of significant genes shows clear separation between control and knockdown samples, confirming consistent expression patterns within groups and strong differential regulation between conditions.
 <p align="center">
   <img src="results/figures/heatmap.png" width="600">
 </p>
+
+### GSEA Dot Plot
+The dotplot highlights significant enrichment of gene sets involved in ribosome biogenesis, rRNA metabolic processes, DNA replication, and chromosome organization. High GeneRatio values and large gene counts indicate that a substantial proportion of differentially expressed genes participate in these pathways. These results suggest that NUDT21 knockdown disrupts core cellular processes involved in RNA regulation, protein synthesis, and cell division.
+<p align="center">
+  <img src="results/figures/dotplot-gsea.png" width="600">
+</p>
+
+### GSEA Enrichment Map
+The enrichment map reveals four major functional clusters impacted by NUDT21 knockdown:
+1. Ribosome biogenesis and rRNA metabolism  
+2. RNA processing and splicing  
+3. DNA replication  
+4. Chromosome organization and mitotic cell cycle regulation  
+These clusters indicate that NUDT21 influences core cellular processes involved in RNA regulation, protein synthesis, and cell division.
+<p align="center">
+  <img src="results/figures/emapplot-gsea.png" width="600">
+</p>
+
+## Discussion
+NUDT21 knockdown resulted in widespread transcriptomic changes, with 63% of tested genes showing significant differential expression (FDR < 0.05). Principal component analysis demonstrated strong separation between control and knockdown samples, indicating a shift in gene expression profiles. The magnitude and consistency of these changes suggest that NUDT21 may function as a broad regulator of transcriptomic programs rather than influencing only a limited subset of genes.
+
+Functional enrichment analysis revealed significant disruption of pathways involved in RNA processing, ribosome biogensis, DNA replication and chromosome organization. These are core cellular systems for gene regulation, protein synthesis, and cell growth. The enrichment map demonstrated clustering of these pathways into coherent groups, indicating coordinated regulation rather than isolated gene effects. 
+
+Collectively, these finding support a role for NUDT21 in maintaining RNA metabolism and proliferative pathways. Future work could extend this analysis to transcript-level regulation, alternative polyadenylation events, and non-coding RNA dynamics to further characterize the mechanistic consequences of NUDT21 depletion.
