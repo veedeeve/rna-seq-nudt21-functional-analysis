@@ -129,7 +129,8 @@ The enrichment map reveals four major functional clusters impacted by NUDT21 kno
 1. Ribosome biogenesis and rRNA metabolism  
 2. RNA processing and splicing  
 3. DNA replication  
-4. Chromosome organization and mitotic cell cycle regulation  
+4. Chromosome organization and mitotic cell cycle regulation
+
 These clusters indicate that NUDT21 influences core cellular processes involved in RNA regulation, protein synthesis, and cell division.
 <p align="center">
   <img src="results/figures/emapplot-gsea.png" width="600">
