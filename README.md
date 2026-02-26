@@ -12,6 +12,13 @@ This pipeline includes:
 ## Objectives  
 The objective of this project was to implement a reproducible RNA-seq bioinformatics workflow using FastQC, HISAT2, featureCounts, limma-voom, and clusterProfiler to identify differentially expressed genes and functionally enriched pathways following NUDT21 knockdown.
 
+## Key Findings
+- 11,450 genes (63%) were significantly differentially expressed (FDR < 0.05)
+- Ribosome biogenesis and RNA processing pathways were strongly enriched
+- DNA replication and mitotic processes were predominantly downregulated
+- PCA demonstrated clear separation between control and knockdown samples (PC1 = 74%)  
+These results suggest that NUDT21 regulates core proliferative and RNA-processing programs.
+
 ## Dataset
 RNA-seq samples retrieved from SRA (BioProject: PRJNA1305742)
  - 2 Control
