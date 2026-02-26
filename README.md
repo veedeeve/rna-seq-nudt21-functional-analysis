@@ -15,7 +15,6 @@ The objective of this project was to implement a reproducible RNA-seq bioinforma
 ## Key Findings
 - 11,450 genes (63%) were significantly differentially expressed (FDR < 0.05)
 - Ribosome biogenesis and RNA processing pathways were strongly enriched
-- DNA replication and mitotic processes were predominantly downregulated
 - PCA demonstrated clear separation between control and knockdown samples (PC1 = 74%)  
 These results suggest that NUDT21 regulates core proliferative and RNA-processing programs.
 
