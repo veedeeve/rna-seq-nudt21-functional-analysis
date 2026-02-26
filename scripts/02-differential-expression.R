@@ -180,7 +180,7 @@ volcano_plot <- ggplot(res, aes(x = logFC,
        y = expression(-log[10]~"adjusted p-value"),
        color = "Differential Expression"
        ) +
-  coord_cartesian(ylim = c(0, 50)) +
+  coord_cartesian(ylim = c(0, 20)) +
   theme_minimal() +
   theme(legend.position = "right",
         panel.grid.minor = element_blank(),
