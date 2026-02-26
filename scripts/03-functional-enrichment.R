@@ -56,10 +56,6 @@ emapplot(enrich_gsea_sim,
         node_label_size = 3)
 ggsave("results/gsea/emapplot-gsea.png", width=18, height=16, units="cm")
 
-# ---------- 6) Plot GSEA running enrichment ----------
-gseaplot2(enrich_gsea, geneSetID = 1)
-ggsave("results/gsea/gseaplot-top1.png", width=18, height=14, units="cm")
-
 # ---------- 7) Top 10 Upregulated and Downregulated ----------
 enrich_go_gsea_tbl <- as.data.table(as.data.frame(enrich_gsea))
 #  Filter significant pathways
