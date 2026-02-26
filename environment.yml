@@ -1,0 +1,36 @@
+name: rna-seq
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  # Core
+  - python=3.11
+  - r-base=4.3
+
+  # RNA-seq command-line tools
+  - fastqc
+  - trimmomatic
+  - hisat2
+  - samtools
+  - subread
+  - multiqc
+  - sra-tools
+
+  # Bioconductor packages
+  - bioconductor-edger
+  - bioconductor-limma
+  - bioconductor-clusterprofiler
+  - bioconductor-enrichplot
+  - bioconductor-dose
+  - bioconductor-org.hs.eg.db
+  - bioconductor-sva
+  - bioconductor-enhancedvolcano
+
+  # CRAN packages
+  - r-ggplot2
+  - r-data.table
+  - r-ggrepel
+  - r-ggfortify
+  - r-pheatmap
