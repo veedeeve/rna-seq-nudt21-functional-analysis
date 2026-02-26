@@ -68,22 +68,40 @@ rna-seq-analysis/
 ### Alignment & Quality Control
 All samples demonstrated high alignment efficiency (98.7–98.9% mapped reads) to the GRCh38 reference genome. Sequencing depth ranged from 56–85 million mapped reads per sample, providing sufficient coverage for differential gene expression.  
 <p align="center">
-  <img src="results/figures/multiqc-alignment-summary.png" width="800">
+  <img src="results/figures/multiqc-alignment-summary.png" width="600">
 </p> 
 
 ### Mean–Variance Modeling (voom)
 The voom transformation modeled the mean–variance relationship of log-counts and generated precision weights for linear modeling, ensuring appropriate stabilization prior to differential expression analysis.
 <p align="center">
-  <img src="results/figures/voom-mean-variance.png" width="800">
+  <img src="results/figures/voom-mean-variance.png" width="600">
 </p> 
 
 ### Significant Genes
-After filtering and normalization, **18,180** genes were retained for analysis. Using an FDR < 0.05 threshold, **11,450** genes (~63%) were significantly differentially expressed between control and NUDT21 knockdown samples.  
-Among these:  
-- **5,965** genes were upregulated
-- **5,485** genes were downregulated  
+A total of 18,180 genes were tested for differential expression.  
+- **11,450 genes (63%)** were significant at FDR < 0.05  
+- 5,965 genes were upregulated  
+- 5,485 genes were downregulated  
+- 2,953 genes showed |log2FC| > 1  
+- 1,701 genes were strongly upregulated (log2FC > 1)  
+- 1,252 genes were strongly downregulated (log2FC < -1)  
 
-Applying a more stringent biological threshold (FDR < 0.05 and |log2FC| > 1), **2,953** genes showed strong differential expression, including:  
+These results indicate widespread transcriptomic changes following NUDT21 knockdown.
 
-- **1,701** strongly upregulated
-- **1,252** strongly downregulated
+### Principal Component Analysis (PCA)
+PCA of voom-transformed expression values revealed strong separation between control and NUDT21 knockdown samples along PC1 (74.04% variance explained). Reducing NUDT21 caused a major change in gene activity.
+<p align="center">
+  <img src="results/figures/pca-plot.png" width="600">
+</p> 
+
+### Volcano Plot
+The volcano plot illustrates the magnitude and statistical significance of gene expression changes. A large proportion of genes exhibited significant differential expression, consistent with extensive regulatory disruption.  
+<p align="center">
+  <img src="results/figures/volcano-plot.png" width="600">
+</p> 
+
+### Heatmap of Differentially Expressed Genes
+Hierarchical clustering of significant genes shows clear separation between control and knockdown samples, confirming consistent expression patterns within groups and strong differential regulation between conditions. The genes flipped their behavior based on the condition, consistently changed gene programs.  
+<p align="center">
+  <img src="results/figures/heatmap.png" width="600">
+</p>
