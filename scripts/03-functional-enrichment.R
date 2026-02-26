@@ -39,7 +39,9 @@ enrich_gsea <- gseGO(
 dotplot_enrich_gsea <- dotplot(enrich_gsea,
                                showCategory = 10,
                                orderBy="NES")
-dir.create("results/gsea", recursive = TRUE, showWarnings = FALSE)
+dir.create("results/gsea",
+           recursive = TRUE,
+           showWarnings = FALSE)
 ggsave("results/gsea/dotplot-gsea.png",
        dotplot_enrich_gsea,
        device = "png",
@@ -49,7 +51,9 @@ ggsave("results/gsea/dotplot-gsea.png",
 
 # ---------- 5) Plot GSEA enrichment map ----------
 enrich_gsea_sim <- pairwise_termsim(enrich_gsea)
-emapplot(enrich_gsea_sim, showCategory = 20)
+emapplot(enrich_gsea_sim,
+         showCategory = 20,
+        node_label_size = 3)
 ggsave("results/gsea/emapplot-gsea.png", width=18, height=16, units="cm")
 
 # ---------- 6) Plot GSEA running enrichment ----------
