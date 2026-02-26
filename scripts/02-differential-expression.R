@@ -105,6 +105,16 @@ head(res)
 res$gene <- rownames(res)
 fwrite(res, "results/differential-gene-expression/differential-gene-expression.tsv", sep = "\t")
 
+# Top 10 upregulated
+top_up <- res[res$adj.P.Val < 0.05 & res$logFC > 0, ]
+top_up <- top_up[order(-top_up$logFC), ][1:10, ]
+fwrite(top_up, "results/differential-gene-expression/top10_upregulated.tsv", sep="\t")
+
+# Top 10 downregulated
+top_down <- res[res$adj.P.Val < 0.05 & res$logFC < 0, ]
+top_down <- top_down[order(top_down$logFC), ][1:10, ]
+fwrite(top_down, "results/differential-gene-expression/top10_downregulated.tsv", sep="\t")
+
 # ---------- 16) How many significant genes? ----------
 # adj.P.Val is FDR (multiple-testing corrected p-value).
 sum(res$adj.P.Val < 0.05)
