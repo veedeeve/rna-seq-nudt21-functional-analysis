@@ -19,6 +19,7 @@ gzip ~/rna-seq-analysis/data/SRR34987611*.fastq
 prefetch SRR34987612 --output-directory ~/rna-seq-analysis/data/
 fasterq-dump ~/rna-seq-analysis/data/SRR34987612/SRR34987612.sra --split-files -O ~/rna-seq-analysis/data --threads 8
 gzip ~/rna-seq-analysis/data/SRR34987612*.fastq
+
 prefetch SRR34987613 --output-directory ~/rna-seq-analysis/data/
 fasterq-dump ~/rna-seq-analysis/data/SRR34987613/SRR34987613.sra --split-files -O ~/rna-seq-analysis/data --threads 8
 gzip ~/rna-seq-analysis/data/SRR34987613*.fastq
