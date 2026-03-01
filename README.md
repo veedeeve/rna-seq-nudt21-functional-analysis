@@ -22,8 +22,8 @@ These results suggest that NUDT21 regulates core proliferative and RNA-processin
 ## Dataset
 RNA-seq samples retrieved from SRA (BioProject: PRJNA1305742)
  - 2 Control
- - 2 NUDT21 knockdown
-**Genome reference**: GRCh38
+ - 2 NUDT21 knockdown  
+**Genome reference**: GRCh38  
 **Annotation**: Ensembl Homo_sapiens.GRCh38
 
 ## Project Structure
