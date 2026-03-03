@@ -137,6 +137,11 @@ These clusters indicate that NUDT21 influences core cellular processes involved 
   <img src="results/figures/emapplot-gsea.png" width="600">
 </p>
 
+## Workflow Diagram
+<p align="center">
+  <img src="results/figures/rna-seq-nudt21-functional-analysis-workflow.drawio.pdf" width="600">
+</p>
+
 ## Discussion
 NUDT21 knockdown resulted in widespread transcriptomic changes, with 63% of tested genes showing significant differential expression (FDR < 0.05). Principal component analysis demonstrated strong separation between control and knockdown samples, indicating a shift in gene expression profiles. The magnitude and consistency of these changes suggest that NUDT21 may function as a broad regulator of transcriptomic programs rather than influencing only a limited subset of genes.
 
