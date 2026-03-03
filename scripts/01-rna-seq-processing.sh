@@ -101,7 +101,7 @@ mkdir -p ~/rna-seq-analysis/results/multiqc/
 multiqc ~/rna-seq-analysis/ \
   -o ~/rna-seq-analysis/results/multiqc/
 
-# ---------- 7) Annotate (featureCounts)  ----------
+# ---------- 7) Gene Count Matrix (featureCounts)  ----------
 # Download gene annotation
 mkdir -p ~/rna-seq-analysis/results/counts
 mkdir -p ~/rna-seq-analysis/data/annot
