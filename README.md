@@ -1,5 +1,10 @@
 # RNA-seq Functional Analysis of NUDT21 Knockdown
 
+## Workflow Diagram
+<p align="center">
+  <img src="results/figures/rna-seq-nudt21-functional-analysis-workflow.drawio.png" width="600">
+</p>
+
 ## Project Overview
 This project implements a fully reproducible RNA-seq analysis workflow to investigate the functional impact of **NUDT21** knockdown in human samples.
 
@@ -135,11 +140,6 @@ The enrichment map reveals four major functional clusters impacted by NUDT21 kno
 These clusters indicate that NUDT21 influences core cellular processes involved in RNA regulation, protein synthesis, and cell division.
 <p align="center">
   <img src="results/figures/emapplot-gsea.png" width="600">
-</p>
-
-## Workflow Diagram
-<p align="center">
-  <img src="results/figures/rna-seq-nudt21-functional-analysis-workflow.drawio.png" width="600">
 </p>
 
 ## Discussion
