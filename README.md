@@ -1,10 +1,5 @@
 # RNA-seq Functional Analysis of NUDT21 Knockdown
 
-## Workflow Diagram
-<p align="center">
-  <img src="results/figures/rna-seq-nudt21-functional-analysis-workflow.drawio.png" width="600">
-</p>
-
 ## Project Overview
 This project implements a fully reproducible RNA-seq analysis workflow to investigate the functional impact of **NUDT21** knockdown in human samples.
 
@@ -14,8 +9,12 @@ This pipeline includes:
 3. Differential Expression
 4. Functional Enrichment
 
-## Objectives  
+---
+
+## Objectives 
 The objective of this project was to implement a reproducible RNA-seq bioinformatics workflow using FastQC, HISAT2, featureCounts, limma-voom, and clusterProfiler to identify differentially expressed genes and functionally enriched pathways following NUDT21 knockdown.
+
+---
 
 ## Key Findings
 - 11,450 genes (63%) were significantly differentially expressed (FDR < 0.05)
@@ -24,37 +23,7 @@ The objective of this project was to implement a reproducible RNA-seq bioinforma
 
 These results suggest that NUDT21 regulates core proliferative and RNA-processing programs.
 
-## Dataset
-RNA-seq samples retrieved from SRA (BioProject: PRJNA1305742)
- - 2 Control
- - 2 NUDT21 knockdown  
-**Genome reference**: GRCh38  
-**Annotation**: Ensembl Homo_sapiens.GRCh38
-
-## Project Structure
-### 1. Preprocessing Data (BASH)
-*Ensures high-quality reads prior to alignment*  
-#### 1.1 Data Download - Retrieved from NCBI SRA using ```prefetch```  
-#### 1.2 Quality Control - Assessed using ```FastQC```  
-#### 1.3 Adapter & Quality Trimming - Performed using ```Trimmomatic```  
-#### 1.4 Post-trimming quality control - Re-evaluated using ```FastQC```  
-
-### 2. Alignment & Annotation
-*Pair-end RNA-seq reads aligned to human reference genome, sorted BAM files generated with samtools. Produce count-matrix for downstream DEG analysis by quantifying read counts*  
-#### 2.1 Alignment - Align to GRCh38 index using ```HISAT2```  
-#### 2.2 Alignment Quality Assessment - ```samtools flagstat``` + ```MultiQC```  
-#### 2.3 Gene-level Quantification - ```featureCounts```  
-
-### 3. Differential Expression (R)
-#### 3.1 Filtering + TMM normalization - ```edgeR```  
-#### 3.3 Linear modeling - ```limma-voom```  
-#### 3.4 T-statistics ranking  
-#### 3.5 PCA for QC
-
-### 4. Functional Enrichment (R)
-#### GO Gene Set Enrichment Analysis - ``` clusterProfiler``` 
-#### Human gene annotation - ``` org.Hs.eg.db``` 
-#### Enrichment visualization - ``` enrichplot ``` 
+---
 
 ## File Structure
 ```
@@ -70,9 +39,13 @@ rna-seq-analysis/
 │   ├── 01-rna-seq-processing.sh
 │   ├── 02-differential-expression.R
 │   └── 03-functional-enrichment.R
+├── docs/
+│   ├── methodology.md
 ├── environment.yml
 └── README.md
 ```
+
+---
 
 ## Reproducible Environment
 This project includes a Conda environment specification file (`environment.yml`) containing all required command-line tools and R/Bioconductor packages.
@@ -82,7 +55,10 @@ conda env create -f environment.yml
 conda activate rna-seq
 ```
 
+---
+
 ## Results
+
 ### Alignment & Quality Control
 All samples demonstrated high alignment efficiency (98.7–98.9% mapped reads) to the GRCh38 reference genome. Sequencing depth ranged from 56–85 million mapped reads per sample, providing sufficient coverage for differential gene expression.  
 <p align="center">
@@ -141,6 +117,15 @@ These clusters indicate that NUDT21 influences core cellular processes involved 
 <p align="center">
   <img src="results/figures/emapplot-gsea.png" width="600">
 </p>
+
+---
+
+## Workflow Diagram
+<p align="center">
+  <img src="results/figures/rna-seq-nudt21-functional-analysis-workflow.drawio.png" width="600">
+</p>
+
+---
 
 ## Discussion
 NUDT21 knockdown resulted in widespread transcriptomic changes, with 63% of tested genes showing significant differential expression (FDR < 0.05). Principal component analysis demonstrated strong separation between control and knockdown samples, indicating a shift in gene expression profiles. The magnitude and consistency of these changes suggest that NUDT21 may function as a broad regulator of transcriptomic programs rather than influencing only a limited subset of genes.
