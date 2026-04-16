@@ -1,0 +1,122 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Python 
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+
+# Conda / environments
+.env
+.venv/
+venv/
+env/
+conda-meta/
+.mamba/
+
+# Logs
+*.log
+logs/
+*.out
+*.err
+
+# Temporary files
+tmp/
+temp/
+.cache/
+
+# Raw sequencing data
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+
+# Alignment files
+*.sam
+*.bam
+*.bai
+*.cram
+*.crai
+
+# Count / intermediate quantification files
+*.counts
+*.tsv.tmp
+*.featureCounts
+*.htseq.txt
+
+# Variant calling / other genomics intermediates
+*.vcf
+*.vcf.gz
+*.gvcf
+*.gff
+*.bed
+
+# Reference indexes (rebuildable)
+*.bt2
+*.ht2
+*.bwt
+*.pac
+*.ann
+*.amb
+*.sa
+*.fai
+*.dict
+
+# Large reference files if you do not want them in git
+*.fa
+*.fasta
+*.fna
+*.fa.gz
+*.fasta.gz
+*.gtf
+*.gtf.gz
+*.gff3
+*.gff3.gz
+
+# QC output
+multiqc_report.html
+multiqc_data/
+fastqc/
+*_fastqc.html
+*_fastqc.zip
+
+# Pipeline output folders
+results/
+output/
+outputs/
+work/
+
+# Figures you may regenerate
+# Uncomment if you do not want generated plots tracked
+# figures/
+# *.pdf
+# *.png
+# *.svg
+
+# Notebook outputs
+*.nb.html
+
+# keep code and metadata
+!scripts/
+!src/
+!workflow/
+!config/
+!metadata/
+!README.md
+!environment.yml
+!requirements.txt
+!Snakefile
+!nextflow.config
