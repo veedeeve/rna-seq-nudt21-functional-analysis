@@ -1,16 +1,31 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -Eeuo pipefail
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"
+}
 
-# Directory
-# /users/vydang/rna-seq-analysis/
+cd "$(dirname "$0")"
+source config.sh 
 
-SECONDS=0
+# ####################################
+# 1. Download (SRR: SRR34987610)
+######################################
 
-# ---------- 1) Download Files (SRR Accession: SRR34987610)  ----------
 # Control files
-prefetch SRR34987610 --output-directory ~/rna-seq-analysis/data
-fasterq-dump ~/rna-seq-analysis/data/SRR34987610/SRR34987610.sra --split-files -O ~/rna-seq-analysis/data --threads 8
-gzip ~/rna-seq-analysis/data/SRR34987610*.fastq
 
+log "Downloading reads ..."
+
+#prefetch "$READS1" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read1.log" 2>&1
+fasterq-dump "$RAW_DATA_DIR/$READS1/" \
+ --split-files \
+ -O "$RAW_DATA_DIR" \
+ --threads "$THREADS" \
+ > "$LOGS_DIR/02_split_file.log" 2>&1
+gzip "$RAW_DATA_DIR/$READS1"*.fastq
+
+log "Read 1 completed"
+
+: << 'COMMENT'
 prefetch SRR34987611 --output-directory ~/rna-seq-analysis/data/
 fasterq-dump ~/rna-seq-analysis/data/SRR34987611/SRR34987611.sra --split-files -O ~/rna-seq-analysis/data --threads 8
 gzip ~/rna-seq-analysis/data/SRR34987611*.fastq
@@ -114,3 +129,4 @@ featureCounts -T 8 -p --countReadPairs -s 2 \
 ~/rna-seq-analysis/results/alignment/*.bam
 
 echo "$((SECONDS/60)) minutes and $((SECONDS%60)) seconds elapsed."
+COMMENT
