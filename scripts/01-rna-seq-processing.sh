@@ -15,7 +15,8 @@ source config.sh
 
 log "Downloading reads ..."
 
-#prefetch "$READS1" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read1.log" 2>&1
+: << 'COMMENT'
+prefetch "$READS1" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read1.log" 2>&1
 fasterq-dump "$RAW_DATA_DIR/$READS1/" \
  --split-files \
  -O "$RAW_DATA_DIR" \
@@ -23,23 +24,48 @@ fasterq-dump "$RAW_DATA_DIR/$READS1/" \
  > "$LOGS_DIR/02_split_file.log" 2>&1
 gzip "$RAW_DATA_DIR/$READS1"*.fastq
 
+rm -rf "$RAW_DATA_DIR/$READS1/"
+
 log "Read 1 completed"
 
-: << 'COMMENT'
-prefetch SRR34987611 --output-directory ~/rna-seq-analysis/data/
-fasterq-dump ~/rna-seq-analysis/data/SRR34987611/SRR34987611.sra --split-files -O ~/rna-seq-analysis/data --threads 8
-gzip ~/rna-seq-analysis/data/SRR34987611*.fastq
+prefetch "$READS2" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read2.log" 2>&1
+fasterq-dump "$RAW_DATA_DIR/$READS2/" \
+ --split-files \
+ -O "$RAW_DATA_DIR" \
+ --threads "$THREADS" \
+ > "$LOGS_DIR/02_read2_split_file.log" 2>&1
+gzip "$RAW_DATA_DIR/$READS2"*.fastq
+
+rm -rf "$RAW_DATA_DIR/$READS2"
+
+log "Read 2 complete"
+COMMENT
 
 # NUDT21 Knockdown files
-prefetch SRR34987612 --output-directory ~/rna-seq-analysis/data/
-fasterq-dump ~/rna-seq-analysis/data/SRR34987612/SRR34987612.sra --split-files -O ~/rna-seq-analysis/data --threads 8
-gzip ~/rna-seq-analysis/data/SRR34987612*.fastq
+prefetch "$READS3" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read3.log" 2>&1
+fasterq-dump "$RAW_DATA_DIR/$READS3/" \
+--split-files \
+-O "$RAW_DATA_DIR" \
+--threads "$THREADS" \
+> "$LOGS_DIR/02_read3_split_file.log" 2>&1
+gzip "$RAW_DATA_DIR/$READS3"*.fastq
 
-prefetch SRR34987613 --output-directory ~/rna-seq-analysis/data/
-fasterq-dump ~/rna-seq-analysis/data/SRR34987613/SRR34987613.sra --split-files -O ~/rna-seq-analysis/data --threads 8
-gzip ~/rna-seq-analysis/data/SRR34987613*.fastq
+rm -rf "$RAW_DATA_DIR/$READS3"
 
+log "Read 3 complete"
 
+prefetch "$READS4" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read4.log" 2>&1
+fasterq-dump "$RAW_DATA_DIR/$READS4/" \
+--split-files \
+-O "$RAW_DATA_DIR" \
+--threads "$THREADS" \
+> "$LOGS_DIR/02_read4_split_file.log" 2>&1
+gzip "$RAW_DATA_DIR/$READS4"*.fastq
+
+rm -rf "$RAW_DATA_DIR/$READS4"
+
+log "Read 4 complete"
+: << 'COMMENT'
 # ---------- 2) Quality Control (before trim)  ----------
 mkdir -p ~/rna-seq-analysis/results/fastqc/before-trim
 fastqc ~/rna-seq-analysis/data/SRR*_*.fastq.gz -o ~/rna-seq-analysis/data/results/fastqc/before-trim
