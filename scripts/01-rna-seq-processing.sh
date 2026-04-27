@@ -12,147 +12,213 @@ source config.sh
 ######################################
 
 # Control files
-
 log "Downloading reads ..."
 
-: << 'COMMENT'
-prefetch "$READS1" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read1.log" 2>&1
-fasterq-dump "$RAW_DATA_DIR/$READS1/" \
+prefetch "$READ1_ACC" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read1.log" 2>&1
+fasterq-dump "$RAW_DATA_DIR/$READ1_ACC/" \
  --split-files \
  -O "$RAW_DATA_DIR" \
  --threads "$THREADS" \
  > "$LOGS_DIR/02_split_file.log" 2>&1
-gzip "$RAW_DATA_DIR/$READS1"*.fastq
+gzip "$RAW_DATA_DIR/$READ1_ACC"*.fastq
 
-rm -rf "$RAW_DATA_DIR/$READS1/"
+rm -rf "$RAW_DATA_DIR/$READ1_ACC/"
 
 log "Read 1 completed"
 
-prefetch "$READS2" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read2.log" 2>&1
-fasterq-dump "$RAW_DATA_DIR/$READS2/" \
+prefetch "$READ2_ACC" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read2.log" 2>&1
+fasterq-dump "$RAW_DATA_DIR/$READ2_ACC/" \
  --split-files \
  -O "$RAW_DATA_DIR" \
  --threads "$THREADS" \
  > "$LOGS_DIR/02_read2_split_file.log" 2>&1
-gzip "$RAW_DATA_DIR/$READS2"*.fastq
+gzip "$RAW_DATA_DIR/$READ2_ACC"*.fastq
 
-rm -rf "$RAW_DATA_DIR/$READS2"
+rm -rf "$RAW_DATA_DIR/$READ2_ACC"
 
 log "Read 2 complete"
-COMMENT
 
 # NUDT21 Knockdown files
-prefetch "$READS3" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read3.log" 2>&1
-fasterq-dump "$RAW_DATA_DIR/$READS3/" \
+prefetch "$READ3_ACC" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read3.log" 2>&1
+fasterq-dump "$RAW_DATA_DIR/$READ3_ACC/" \
 --split-files \
 -O "$RAW_DATA_DIR" \
 --threads "$THREADS" \
 > "$LOGS_DIR/02_read3_split_file.log" 2>&1
-gzip "$RAW_DATA_DIR/$READS3"*.fastq
+gzip "$RAW_DATA_DIR/$READ3_ACC"*.fastq
 
-rm -rf "$RAW_DATA_DIR/$READS3"
+rm -rf "$RAW_DATA_DIR/$READ3_ACC"
 
 log "Read 3 complete"
 
-prefetch "$READS4" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read4.log" 2>&1
-fasterq-dump "$RAW_DATA_DIR/$READS4/" \
+prefetch "$READ4_ACC" --output-directory "$RAW_DATA_DIR" > "$LOGS_DIR/01_download_read4.log" 2>&1
+fasterq-dump "$RAW_DATA_DIR/$READ4_ACC/" \
 --split-files \
 -O "$RAW_DATA_DIR" \
 --threads "$THREADS" \
 > "$LOGS_DIR/02_read4_split_file.log" 2>&1
-gzip "$RAW_DATA_DIR/$READS4"*.fastq
+gzip "$RAW_DATA_DIR/$READ4_ACC"*.fastq
 
-rm -rf "$RAW_DATA_DIR/$READS4"
+rm -rf "$RAW_DATA_DIR/$READ4_ACC"
 
 log "Read 4 complete"
-: << 'COMMENT'
-# ---------- 2) Quality Control (before trim)  ----------
-mkdir -p ~/rna-seq-analysis/results/fastqc/before-trim
-fastqc ~/rna-seq-analysis/data/SRR*_*.fastq.gz -o ~/rna-seq-analysis/data/results/fastqc/before-trim
 
-# ---------- 3) Adapter Trimming  ----------
-mkdir -p ~/rna-seq-analysis/data/trimmed
-trimmomatic PE -threads 8 -phred33 ~/rna-seq-analysis/data/SRR34987610_1.fastq.gz ~/rna-seq-analysis/data/SRR34987610_2.fastq.gz \
-~/rna-seq-analysis/data/trimmed/SRR34987610_1_paired.fastq.gz ~/rna-seq-analysis/data/trimmed/SRR34987610_1_unpaired.fastq.gz \
-~/rna-seq-analysis/data/trimmed/SRR34987610_2_paired.fastq.gz ~/rna-seq-analysis/data/trimmed/SRR34987610_2_unpaired.fastq.gz \
-ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \
-SLIDINGWINDOW:4:20 \
-MINLEN:36
-echo 'SRR34987610 trimming completed!'
-trimmomatic PE -threads 8 -phred33 ~/rna-seq-analysis/data/SRR34987611_1.fastq.gz ~/rna-seq-analysis/data/SRR34987611_2.fastq.gz \
-~/rna-seq-analysis/data/trimmed/SRR34987611_1_paired.fastq.gz ~/rna-seq-analysis/data/trimmed/SRR34987611_1_unpaired.fastq.gz \
-~/rna-seq-analysis/data/trimmed/SRR34987611_2_paired.fastq.gz ~/rna-seq-analysis/data/trimmed/SRR34987611_2_unpaired.fastq.gz \
-ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \
-SLIDINGWINDOW:4:20 \
-MINLEN:36
-echo 'SRR34987611 trimming completed!'
-trimmomatic PE -threads 8 -phred33 ~/rna-seq-analysis/data/SRR34987612_1.fastq.gz ~/rna-seq-analysis/data/SRR34987612_2.fastq.gz \
-~/rna-seq-analysis/data/trimmed/SRR34987612_1_paired.fastq.gz ~/rna-seq-analysis/data/trimmed/SRR34987612_1_unpaired.fastq.gz \
-~/rna-seq-analysis/data/trimmed/SRR34987612_2_paired.fastq.gz ~/rna-seq-analysis/data/trimmed/SRR34987612_2_unpaired.fastq.gz \
-ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \
-SLIDINGWINDOW:4:20 \
-MINLEN:36
-echo 'SRR34987612 trimming completed!'
-trimmomatic PE -threads 8 -phred33 ~/rna-seq-analysis/data/SRR34987613_1.fastq.gz ~/rna-seq-analysis/data/SRR34987613_2.fastq.gz \
-~/rna-seq-analysis/data/trimmed/SRR34987613_1_paired.fastq.gz ~/rna-seq-analysis/data/trimmed/SRR34987613_1_unpaired.fastq.gz \
-~/rna-seq-analysis/data/trimmed/SRR34987613_2_paired.fastq.gz ~/rna-seq-analysis/data/trimmed/SRR34987613_2_unpaired.fastq.gz \
-ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \
-SLIDINGWINDOW:4:20 \
-MINLEN:36
-echo 'SRR34987613 trimming completed!'
+####################################
+# 2. FastQC (raw_data)
+####################################
 
-# ---------- 4) Quality Control (after trim)  ----------
-mkdir -p ~/rna-seq-analysis/results/fastqc/after-trim
-fastqc ~/rna-seq-analysis/data/trimmed/*_paired.fastq.gz -o ~/rna-seq-analysis/results/fastqc/after-trim
+log "Starting FastQC ..."
 
-# ---------- 5) Alignment (HISAT2)  ----------
+fastqc "$READ1_R1" "$READ1_R2" "$READ2_R1" "$READ2_R2" "$READ3_R1" "$READ3_R2" "$READ4_R1" "$READ4_R2" \
+-o "$FASTQC_RAW_DIR" \
+> "$LOGS_DIR/03_fastqc_raw.log" 2>&1
+
+log "FastQC completed"
+
+####################################
+# 3. Trimmomatic
+####################################
+
+log "Starting trimming ..."
+
+trimmomatic PE \
+-threads "$THREADS" \
+-phred33 "$READ1_R1" "$READ1_R2" \
+"$TRIMMED_DIR/$READ1_ACC"_1_paired.fastq.gz "$TRIMMED_DIR/$READ1_ACC"_1_unpaired.fastq.gz \
+"$TRIMMED_DIR/$READ1_ACC"_2_paired.fastq.gz "$TRIMMED_DIR/$READ1_ACC"_2_unpaired.fastq.gz \
+ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \
+SLIDINGWINDOW:4:20 \
+MINLEN:36 \
+> "$LOGS_DIR/04_trimming_read1.log" 2>&1
+
+log "Completed trimming on read 1"
+
+trimmomatic PE \
+-threads "$THREADS" \
+-phred33 "$READ2_R1" "$READ2_R2" \
+"$TRIMMED_DIR/$READ2_ACC"_1_paired.fastq.gz "$TRIMMED_DIR/$READ2_ACC"_1_unpaired.fastq.gz \
+"$TRIMMED_DIR/$READ2_ACC"_2_paired.fastq.gz "$TRIMMED_DIR/$READ2_ACC"_2_unpaired.fastq.gz \
+ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \
+SLIDINGWINDOW:4:20 \
+MINLEN:36 \
+> "$LOGS_DIR/04_trimming_read2.log" 2>&1
+
+log "Completed trimming on read 2"
+
+trimmomatic PE \
+-threads "$THREADS" \
+-phred33 "$READ3_R1" "$READ3_R2" \
+"$TRIMMED_DIR/$READ3_ACC"_1_paired.fastq.gz "$TRIMMED_DIR/$READ3_ACC"_1_unpaired.fastq.gz \
+"$TRIMMED_DIR/$READ3_ACC"_2_paired.fastq.gz "$TRIMMED_DIR/$READ3_ACC"_2_unpaired.fastq.gz \
+ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \
+SLIDINGWINDOW:4:20 \
+MINLEN:36 \
+> "$LOGS_DIR/04_trimming_read3.log" 2>&1
+
+log "Completed trimming on read 3"
+
+trimmomatic PE \
+-threads "$THREADS" \
+-phred33 "$READ4_R1" "$READ4_R2" \
+"$TRIMMED_DIR/$READ4_ACC"_1_paired.fastq.gz "$TRIMMED_DIR/$READ4_ACC"_1_unpaired.fastq.gz \
+"$TRIMMED_DIR/$READ4_ACC"_2_paired.fastq.gz "$TRIMMED_DIR/$READ4_ACC"_2_unpaired.fastq.gz \
+ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \
+SLIDINGWINDOW:4:20 \
+MINLEN:36 \
+> "$LOGS_DIR/04_trimming_read4.log" 2>&1
+
+log "Completed trimming on read 4"
+
+
+####################################
+# 4. FastQC (trimmed_data)
+####################################
+
+log "Starting FastQC on trimmed reads ..."
+
+fastqc "$TRIMMED_DIR/"*_paired.fastq.gz -o "$FASTQC_TRIMMED_DIR" > "$LOGS_DIR/05_fastqc_trimmed.log" 2>&1
+
+log "FastQC on trimmed reads completed"
+
+
+####################################
+# 5. Alignment (HISAT2)
+####################################
+
 # Download HISAT2 index file
-mkdir -p ~/rna-seq-analysis/data/ref
-wget -P ~/rna-seq-analysis/data/ref https://genome-idx.s3.amazonaws.com/hisat/grch38_genome.tar.gz
-tar -xvzf ~/rna-seq-analysis/data/ref/grch38_genome.tar.gz -C ~/rna-seq-analysis/data/ref
-mkdir -p ~/rna-seq-analysis/results/alignment
-hisat2 -p 8 -x ~/rna-seq-analysis/data/ref/grch38/genome \
--1 ~/rna-seq-analysis/data/trimmed/SRR34987610_1_paired.fastq.gz \
--2 ~/rna-seq-analysis/data/trimmed/SRR34987610_2_paired.fastq.gz  \
-| samtools sort -@ 8 -o ~/rna-seq-analysis/results/alignment/SRR34987610.bam
-echo 'SRR34987610 alignment complete!'
-hisat2 -p 8 -x ~/rna-seq-analysis/data/ref/grch38/genome \
--1 ~/rna-seq-analysis/data/trimmed/SRR34987611_1_paired.fastq.gz \
--2 ~/rna-seq-analysis/data/trimmed/SRR34987611_2_paired.fastq.gz  \
-| samtools sort -@ 8 -o ~/rna-seq-analysis/results/alignment/SRR34987611.bam
-echo 'SRR34987611 alignment complete!'
-hisat2 -p 8 -x ~/rna-seq-analysis/data/ref/grch38/genome \
--1 ~/rna-seq-analysis/data/trimmed/SRR34987612_1_paired.fastq.gz \
--2 ~/rna-seq-analysis/data/trimmed/SRR34987612_2_paired.fastq.gz  \
-| samtools sort -@ 8 -o ~/rna-seq-analysis/results/alignment/SRR34987612.bam
-echo 'SRR34987612 alignment complete!'
-hisat2 -p 8 -x ~/rna-seq-analysis/data/ref/grch38/genome \
--1 ~/rna-seq-analysis/data/trimmed/SRR34987613_1_paired.fastq.gz \
--2 ~/rna-seq-analysis/data/trimmed/SRR34987613_2_paired.fastq.gz  \
-| samtools sort -@ 8 -o ~/rna-seq-analysis/results/alignment/SRR34987613.bam
-echo 'SRR34987613 alignment complete!'
 
-# ---------- 6) Quality Control (MultiQC)  ----------
-# Create logs for MultiQC
-samtools flagstat ~/rna-seq-analysis/results/alignment/SRR34987610.bam > ~/rna-seq-analysis/results/alignment/SRR34987610.flagstat.txt
-samtools flagstat ~/rna-seq-analysis/results/alignment/SRR34987611.bam > ~/rna-seq-analysis/results/alignment/SRR34987611.flagstat.txt
-samtools flagstat ~/rna-seq-analysis/results/alignment/SRR34987612.bam > ~/rna-seq-analysis/results/alignment/SRR34987612.flagstat.txt
-samtools flagstat ~/rna-seq-analysis/results/alignment/SRR34987613.bam > ~/rna-seq-analysis/results/alignment/SRR34987613.flagstat.txt
-mkdir -p ~/rna-seq-analysis/results/multiqc/
-multiqc ~/rna-seq-analysis/ \
-  -o ~/rna-seq-analysis/results/multiqc/
+log "Downloading HISAT2 index file ..."
 
-# ---------- 7) Gene Count Matrix (featureCounts)  ----------
+wget -O "$HISAT2_INDEX" https://genome-idx.s3.amazonaws.com/hisat/grch38_genome.tar.gz > "$LOGS_DIR/06_hisat_index.log" 2>&1
+tar -xvzf "$HISAT2_INDEX" -C "$REF_DIR"
+
+rm -rf "$HISAT2_INDEX"
+
+log "Completed index file"
+
+log "Starting alignment ..."
+
+PAIRS=( 
+  "$READ1_R1_PAIRED|$READ1_R2_PAIRED|READ1" 
+  "$READ2_R1_PAIRED|$READ2_R2_PAIRED|READ2" 
+  "$READ3_R1_PAIRED|$READ3_R2_PAIRED|READ3"
+  "$READ4_R1_PAIRED|$READ4_R2_PAIRED|READ4"
+  )
+
+for PAIR in "${PAIRS[@]}"
+do
+    IFS="|" read -r R1 R2 SAMPLE <<< "$PAIR"
+
+    {
+    hisat2 -x "$HISAT2_INDEX_DIR" \
+        -1 "$R1" \
+        -2 "$R2" \
+        | samtools sort -@ 8 -o "$HISAT_ALIGN_DIR/${SAMPLE}.bam"
+        
+        samtools index "$HISAT_ALIGN_DIR/${SAMPLE}.bam" \
+        
+        echo "Completed $SAMPLE alignment"
+    } > "$LOGS_DIR/07_${SAMPLE}_alignment.log" 2>&1
+
+done
+
+log "Completed alignment"
+
+####################################
+# 6. Quality Control (MultiQC)
+####################################
+
+log "Starting MultiQC ..."
+
+multiqc "$PROJECT_ROOT" \
+  -o "$MULTIQC_DIR" \
+  > "$LOGS_DIR/08_multiqc.log" 2>&1
+
+log "Completed MultiQC"
+
+####################################
+# 7. Gene Count Matrix (featureCounts)
+####################################
 # Download gene annotation
-mkdir -p ~/rna-seq-analysis/results/counts
-mkdir -p ~/rna-seq-analysis/data/annot
-wget -P ~/rna-seq-analysis/data/annot https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.gtf.gz
-gunzip -c ~/rna-seq-analysis/data/annot/Homo_sapiens.GRCh38.115.gtf.gz > ~/rna-seq-analysis/data/annot/Homo_sapiens.GRCh38.115.gtf
-featureCounts -T 8 -p --countReadPairs -s 2 \
--t exon -g gene_id \
--a ~/rna-seq-analysis/data/annot/Homo_sapiens.GRCh38.115.gtf \
--o ~/rna-seq-analysis/results/counts/counts_s2.txt \
-~/rna-seq-analysis/results/alignment/*.bam
+log "Downloading gene annotation ..."
 
-echo "$((SECONDS/60)) minutes and $((SECONDS%60)) seconds elapsed."
-COMMENT
+wget -O "$COUNT_DIR/Homo_sapiens.GRCh38.115.gtf.gz" https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.gtf.gz \
+> "$LOGS_DIR/09_gene_annotation.log" 2>&1
+gunzip -c "$COUNT_DIR/"Homo_sapiens.GRCh38.115.gtf.gz > "$COUNT_DIR/"Homo_sapiens.GRCh38.115.gtf
+
+log "Completed download"
+
+
+log "Starting count matrix ..."
+
+featureCounts -T "$THREADS" \
+-p --countReadPairs \
+-s 2 \
+-t exon \
+-g gene_id \
+-a "$ANNOTATION_FILE" \
+-o "$COUNT_DIR"/counts_s2.txt \
+"$HISAT_ALIGN_DIR"/*.bam \
+> "$LOGS_DIR/10_gene_count.log" 2>&1
+
+log "Completed count matrix"

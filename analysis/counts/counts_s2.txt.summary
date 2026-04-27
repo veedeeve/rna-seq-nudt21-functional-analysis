@@ -1,0 +1,15 @@
+Status	/Users/vydang/projects/rna-seq-nudt21-functional-analysis/analysis/hisat_alignment/READ1.bam	/Users/vydang/projects/rna-seq-nudt21-functional-analysis/analysis/hisat_alignment/READ2.bam	/Users/vydang/projects/rna-seq-nudt21-functional-analysis/analysis/hisat_alignment/READ3.bam	/Users/vydang/projects/rna-seq-nudt21-functional-analysis/analysis/hisat_alignment/READ4.bam
+Assigned	21624263	32217384	28433275	26036663
+Unassigned_Unmapped	228256	293746	267614	276949
+Unassigned_Read_Type	0	0	0	0
+Unassigned_Singleton	0	0	0	0
+Unassigned_MappingQuality	0	0	0	0
+Unassigned_Chimera	0	0	0	0
+Unassigned_FragmentLength	0	0	0	0
+Unassigned_Duplicate	0	0	0	0
+Unassigned_MultiMapping	3005164	4902718	4538826	4371802
+Unassigned_Secondary	0	0	0	0
+Unassigned_NonSplit	0	0	0	0
+Unassigned_NoFeatures	2572217	3714084	2770124	3562327
+Unassigned_Overlapping_Length	0	0	0	0
+Unassigned_Ambiguity	1192738	1766979	1544965	1407092

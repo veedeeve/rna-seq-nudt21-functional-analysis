@@ -2,18 +2,17 @@
 # RNA-seq Differential Expression
 #############################################
 
-# ---------- 0) Install packages (run once) ----------
-if (!require("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
+# ####################################
+# 0. Install packages
+######################################
 
-BiocManager::install(c("sva", "edgeR", "limma", "Biobase", "biomaRt", 
-                       "clusterProfiler", "EnhancedVolcano", "org.Hs.eg.db"))
+if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
+renv::restore()
 
-install.packages(c("data.table", "readxl", "stringr", "ggplot2", "ggrepel", 
-                   "ggfortify", "ggprism", "pheatmap", "VennDiagram", 
-                   "corrplot", "Hmisc", "stats", "tidyverse"))
+# ####################################
+# 1. Load packages
+######################################
 
-# ---------- 1) Load libraries ----------
 library(data.table)
 library(edgeR)
 library(limma)
@@ -24,22 +23,27 @@ library(stats)
 library(sva)
 library(EnhancedVolcano)
 library(pheatmap)
+library(here)
 
-# ---------- 2) Set working directory ----------
-setwd("/Users/vydang/rna-seq-analysis/")
+# ####################################
+# 3. Set working directory
+######################################
+
+PROJECT_ROOT <- here()
+setwd(PROJECT_ROOT)
 
 # ---------- 3) Locate the featureCounts output ----------
 file_name <- list.files(
-  "/Users/vydang/rna-seq-analysis/results/counts",
-  pattern = "counts_s2.txt$", 
+  file.path(PROJECT_ROOT, "analysis", "counts"),
+  pattern = "counts_s2.txt$",
   recursive = TRUE, 
   full.names = TRUE
-  )
+)
 # Reads the featureCounts table into R.
-fc <- fread(file_name, comment.char = "#", data.table = FALSE)
+raw_feature_counts <- fread(file_name, comment.char = "#", data.table = FALSE)
 
 # ---------- 4) Build a clean counts matrix ----------
-counts_raw <- fc[, c("Geneid", colnames(fc)[7:10])]
+counts_raw <- raw_feature_counts[, c("Geneid", colnames(raw_feature_counts)[7:10])]
 rownames(counts_raw) <- counts_raw$Geneid # name the rows as the geneid
 counts_raw$Geneid <- NULL # removes the geneid column
 
@@ -55,8 +59,8 @@ sample_metadata <- data.frame(
 )
 
 # ---------- 7) Save raw counts matrix ----------
-dir.create("results/counts", recursive = TRUE, showWarnings = FALSE)
-fwrite(counts_raw, "results/counts/counts_raw_matrix.tsv", sep = "\t")
+dir.create(file.path("analysis", "differential_expression"), recursive = TRUE, showWarnings = FALSE)
+fwrite(counts_raw, file.path("analysis", "differential_expression", "counts_raw_matrix.tsv"), sep = "\t")
 
 # ---------- 8) Create edgeR object ----------
 # DGEList stores counts + library sizes + normalization factors + group.
@@ -87,9 +91,9 @@ colnames(design)
 # ---------- 12) voom transform ----------
 # voom converts counts -> log2 CPM and estimates mean-variance relationship.
 # computes precision weights for each observation.
-dir.create("results/differential-gene-expression", recursive = TRUE, showWarnings = FALSE)
 dge_v <- voom(dge, design = design, plot = TRUE)
-saveRDS(dge_v, "results/differential-gene-expression/differential-gene-expression-voom.rds")
+saveRDS(dge_v,  file.path("analysis", "differential_expression",
+                         "differential-gene-expression-voom.rds"))
 
 # ---------- 13) Fit linear model per gene ----------
 # fits a weighted linear model for each gene using the design matrix.
@@ -103,22 +107,21 @@ fit <- eBayes(fit)
 res <- topTable(fit, coef = "groupNUDT21_KD", number = Inf)
 head(res)
 res$gene <- rownames(res)
-fwrite(res, "results/differential-gene-expression/differential-gene-expression.tsv", sep = "\t")
+fwrite(res, file.path("analysis", "differential_expression", "differential-gene-expression.tsv"), sep = "\t")
 
 # Top 10 upregulated
 top_up <- res[res$adj.P.Val < 0.05 & res$logFC > 0, ]
 top_up <- top_up[order(-top_up$logFC), ][1:10, ]
-fwrite(top_up, "results/differential-gene-expression/top10_upregulated.tsv", sep="\t")
+fwrite(top_up, file.path("analysis", "differential_expression", "top10_upregulated.tsv"), sep="\t")
 
 # Top 10 downregulated
 top_down <- res[res$adj.P.Val < 0.05 & res$logFC < 0, ]
 top_down <- top_down[order(top_down$logFC), ][1:10, ]
-fwrite(top_down, "results/differential-gene-expression/top10_downregulated.tsv", sep="\t")
+fwrite(top_down, file.path("analysis", "differential_expression", "top10_downregulated.tsv"), sep="\t")
 
 # ---------- 16) How many significant genes? ----------
 # adj.P.Val is FDR (multiple-testing corrected p-value).
 sum(res$adj.P.Val < 0.05)
-# ~18% of genes are significantly differentially expressed
 sum(res$adj.P.Val < 0.05 & res$logFC > 0) # upregulated
 sum(res$adj.P.Val < 0.05 & res$logFC < 0) # downregulated
 sum(res$adj.P.Val < 0.05 & abs(res$logFC) > 1) # statistically significant
@@ -143,7 +146,7 @@ pca_plot <- autoplot(pca_res,
 pca_plot
 
 # ---------- 20) Save PCA plot ----------
-ggsave("results/differential-gene-expression/pca-plot.png", 
+ggsave(file.path("analysis", "differential_expression", "pca-plot.png"), 
        plot = pca_plot, 
        width = 16, 
        height = 14, 
@@ -199,7 +202,7 @@ volcano_plot <- ggplot(res, aes(x = logFC,
 volcano_plot
 
 ggsave(
-  "results/differential-gene-expression/volcano-plot.png",
+  file.path("analysis", "differential_expression", "volcano-plot.png"),
   volcano_plot,
   width = 14,
   height = 14,
@@ -226,7 +229,7 @@ heatmap <- pheatmap(
   color = colorRampPalette(c("navy", "white", "red"))(100),
   annotation_col = col_annot_df,
   main = "Differential Expression Heatmap",
-  filename = "results/differential-gene-expression/heatmap.png",
+  filename = file.path("analysis", "differential_expression", "heatmap.png"),
   width = 14,
   height = 14
 )
